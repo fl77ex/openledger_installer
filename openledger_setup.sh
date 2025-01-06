@@ -10,12 +10,11 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docke
 
 # Устанавливаем Docker
 sudo apt update || true
-sudo apt upgrade || true
+sudo apt upgrade -y || true
 sudo apt install -y docker-ce docker-ce-cli containerd.io || true
 sudo docker --version || true
 
 # Устанавливаем необходимые зависимости
-sudo apt update || true
 sudo apt install -y libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils libatspi2.0-0 libsecret-1-0 || true
 
 # Скачиваем и устанавливаем OpenLedger Node
@@ -32,8 +31,7 @@ sudo dpkg --configure -a || true
 
 # Генерация нового machine-id
 sudo rm -f /etc/machine-id
-uuidgen | tr -d '-' | sudo tee /etc/machine-id
-cat /etc/machine-id
+uuidgen | tr -d '-' | sudo tee /etc/machine-id > /dev/null
 
 # Запускаем ноду в screen
 screen -dmS openledger_node bash -c 'openledger-node --no-sandbox --disable-gpu --disable-software-rasterizer --disable-extensions'

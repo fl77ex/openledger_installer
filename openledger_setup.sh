@@ -4,6 +4,10 @@
 sudo apt remove -y docker docker-engine docker.io containerd runc || true
 sudo apt install -y apt-transport-https ca-certificates curl software-properties-common || true
 
+# Обновляем источники репозиториев на актуальные зеркала
+sudo sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirror.yandex.ru/ubuntu|g' /etc/apt/sources.list
+sudo sed -i 's|http://security.ubuntu.com/ubuntu|http://mirror.yandex.ru/ubuntu|g' /etc/apt/sources.list
+
 # Добавляем ключ Docker и репозиторий
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg || true
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
@@ -16,6 +20,9 @@ sudo docker --version || true
 
 # Устанавливаем необходимые зависимости
 sudo apt install -y libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils libatspi2.0-0 libsecret-1-0 || true
+
+# Устанавливаем uuidgen, если его нет
+sudo apt install -y uuid-runtime || true
 
 # Скачиваем и устанавливаем OpenLedger Node
 wget https://cdn.openledger.xyz/openledger-node-1.0.0-linux.zip || true

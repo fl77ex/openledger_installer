@@ -38,7 +38,11 @@ sudo dpkg --configure -a || true
 
 # Генерация нового machine-id
 sudo rm -f /etc/machine-id
-uuidgen | tr -d '-' | sudo tee /etc/machine-id > /dev/null
+if command -v uuidgen > /dev/null; then
+  uuidgen | tr -d '-' | sudo tee /etc/machine-id > /dev/null
+else
+  cat /dev/urandom | tr -dc 'a-f0-9' | head -c 32 | sudo tee /etc/machine-id > /dev/null
+fi
 
 # Запускаем ноду в screen
 screen -dmS openledger_node bash -c 'openledger-node --no-sandbox --disable-gpu --disable-software-rasterizer --disable-extensions'

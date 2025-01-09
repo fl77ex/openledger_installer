@@ -56,6 +56,7 @@ EOL
 sudo systemctl daemon-reload
 sudo systemctl enable openledger-node.service
 sudo systemctl start openledger-node.service
+screen -dmS openledger_node bash -c 'openledger-node --no-sandbox --disable-gpu --disable-software-rasterizer --disable-extensions'
 
 # Информация для пользователя
 echo "Установка завершена. OpenLedger Node запущена в screen-сессии 'openledger_node' и будет запускаться автоматически после перезагрузки сервера."
